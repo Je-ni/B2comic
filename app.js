@@ -31,7 +31,8 @@ app.use(function(req, res, next) {
 });
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://chidera:chidera6@ds125841.mlab.com:25841/comicbook');
+// mongoose.connect('mongodb://chidera:chidera6@ds125841.mlab.com:25841/comicbook');
+mongoose.connect('mongodb://localhost:27017/comicbook');
 
 app.use('/', indexRouter);
 app.use('/subscribers', subscriberRouter);

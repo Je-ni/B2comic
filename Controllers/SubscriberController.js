@@ -2,11 +2,12 @@ var service = require('../Services/SubscriberService');
 
 exports.addSubscriber = function(req, res){
     var data = {
-        preferences: req.body.categories,
         email: req.body.email,
         name: req.body.name   
     };
-    return service.addSubscriber(req, res, data);
+    var preferences = req.body.categories; //returns an array of categories
+
+    return service.addSubscriber(req, res, data, preferences);
 }
 
 exports.getSubscribers = function(req, res){

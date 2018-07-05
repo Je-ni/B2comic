@@ -11,15 +11,45 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-exports.addSubscriber = function(req, res, data){
-    repo.add(data, function(err){
+// exports.addSubscriber = function(req, res, data, preferences){
+//     repo.add(data, function(err, subscriber){
+//         var array = data.preferences.split(',');
+//         console.log(array);
+//         array.forEach(element => {            
+//             categoryRepo.getById(element, function(err, category){
+//                 category.subscribers.push(subscriber._id);
+//                 category.save();
+//                 if(err) res.json({err: err, message: "Something went wrong, please try again"});
+//             });
+//         });
+//         // exports.sendMail(req, res, data.email);
+//         res.json({sub: subscriber, message: 'You subscribed successfully'});
+//     });
+// };       
+
+exports.addSubscriber = function(req, res, data, preferences){
+    repo.add(data, function(err, subscriber){
         if(err) res.json({err: err, message: "Something went wrong, please try again"});
         else{
             exports.sendMail(req, res, data.email);
-            res.json({message: 'You subscribed successfully'});
+
+            preferences.forEach(element => {
+                repo.getById(subscriber._id, function(err, subscriber){
+                    subscriber.preferences.push(element);
+                    subscriber.save();
+                })         
+                categoryRepo.getById(element, function(err, category){
+                    category.subscribers.push(subscriber._id);
+                    category.save();
+                });
+            });
+
+            res.json({sub: subscriber, message: 'You subscribed successfully'});
         }
-    })
-};       
+    });
+    // var array = preferences.split(',');
+    console.log(preferences);
+};  
 
 exports.getAllSubscribers = function(req, res){
     repo.get({}, '-__v', {path: 'preferences', select:'-__v'},'', function(err, Subscribers){
