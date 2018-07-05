@@ -10,7 +10,7 @@ exports.addCategory = function(req, res, data){
 }
 
 exports.getAllCategories = function(req, res){
-    repo.get({}, '','', {path: 'subscribers', select: '-__v'}, function(err, Categories){
+    repo.get({}, '-__v','', {path: 'subscribers', select: '-preferences -__v'}, function(err, Categories){
         if(err) res.json({err: err, message: 'Something went wrong'});
         res.json(Categories);
     });

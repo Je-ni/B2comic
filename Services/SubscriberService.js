@@ -52,7 +52,7 @@ exports.addSubscriber = function(req, res, data, preferences){
 };  
 
 exports.getAllSubscribers = function(req, res){
-    repo.get({}, '-__v', {path: 'preferences', select:'-__v'},'', function(err, Subscribers){
+    repo.get({}, '-__v', {path: 'preferences', select:'category -__v'},'', function(err, Subscribers){
         if(err) res.json({err: err, message: 'Something went wrong'});
         res.json(Subscribers);
     });
@@ -73,7 +73,7 @@ exports.sendMail = function(req, res, subscriber){
            console.log(err);
         }
         else{
-            console.log('sent code');
+            console.log('Email sent successfully');
         }
     });
 }
