@@ -12,13 +12,7 @@ var transporter = nodemailer.createTransport({
 });
 
 exports.addSubscriber = function(req, res, data){
-    repo.add(data, function(err, subscriber){
-        for (var preference in data.preferences){
-            categoryRepo.getById(preference, function(err, category){
-                category.subscribers.push(subscriber._id);
-                category.save();
-            });
-        }
+    repo.add(data, function(err){
         if(err) res.json({err: err, message: "Something went wrong, please try again"});
         else{
             exports.sendMail(req, res, data.email);
