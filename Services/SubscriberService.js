@@ -20,7 +20,10 @@ exports.addSubscriber = function(req, res, data){
             });
         }
         if(err) res.json({err: err, message: "Something went wrong, please try again"});
-        res.json({message: 'You subscribed successfully'});
+        else{
+            exports.sendMail(req, res, data.email);
+            res.json({message: 'You subscribed successfully'});
+        }
     })
 };       
 
@@ -31,13 +34,12 @@ exports.getAllSubscribers = function(req, res){
     });
 }
 
-exports.sendMail = function(req, res){
+exports.sendMail = function(req, res, subscriber){
     // setup email data with unicode symbols
     var mailOptions = {
         from: 'b2comicscrum@gmail.com', // sender address
-        to: 'l.ifeoma@genesystechhub.com', // list of receivers
+        to: subscriber, // list of receivers
         subject: 'Hello ✔', // Subject line
-        // text: 'Hello world?', // plain text body
         html: '<b>Hello world?</b>' // html body
     };
 
