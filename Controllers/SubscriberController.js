@@ -3,7 +3,8 @@ var service = require('../Services/SubscriberService');
 exports.addSubscriber = function(req, res){
     var data = {
         preferences: req.body.categories,
-        email: req.body.email   
+        email: req.body.email,
+        name: req.body.name   
     };
     return service.addSubscriber(req, res, data);
 }
