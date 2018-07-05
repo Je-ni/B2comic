@@ -4,10 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var subscriberRouter = require('./routes/subscribers');
 var categoryRouter = require('./routes/category');
+
 
 var app = express();
 
@@ -20,9 +22,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/comicbook');
+mongoose.connect('mongodb://chidera:chidera6@ds125841.mlab.com:25841/comicbook');
 
 app.use('/', indexRouter);
 app.use('/subscribers', subscriberRouter);
