@@ -9,7 +9,7 @@ var cors = require('cors');
 var indexRouter = require('./routes/index');
 var subscriberRouter = require('./routes/subscribers');
 var categoryRouter = require('./routes/category');
-
+var comicRouter = require('./routes/comic');
 
 var app = express();
 
@@ -37,6 +37,7 @@ mongoose.connect('mongodb://chidera:chidera6@ds125841.mlab.com:25841/comicbook')
 app.use('/', indexRouter);
 app.use('/subscribers', subscriberRouter);
 app.use('/categories', categoryRouter);
+app.use('/comics', comicRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
