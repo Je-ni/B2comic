@@ -31,7 +31,7 @@ exports.addSubscriber = function(req, res, data, preferences){
     repo.add(data, function(err, subscriber){
         if(err) res.json({err: err, message: "Something went wrong, please try again"});
         else{
-            exports.sendMail(req, res, data.email);
+            exports.sendMail(req, res, data.email, data.name, preferences.category);
 
             preferences.forEach(element => {
                 repo.getById(subscriber._id, function(err, subscriber){
@@ -58,13 +58,14 @@ exports.getAllSubscribers = function(req, res){
     });
 }
 
-exports.sendMail = function(req, res, subscriber){
+exports.sendMail = function(req, res, subscriber, name, preferences){
     // setup email data with unicode symbols
     var mailOptions = {
         from: 'b2comicscrum@gmail.com', // sender address
         to: subscriber, // list of receivers
-        subject: 'Hello ✔', // Subject line
-        html: '<b>Hello world?</b>' // html body
+        subject: `Welcome to Our World Of Comics ${name} 🎇`, // Subject line
+        html: "<p>Yipee, you'll now start receiving our latest updates " +
+                `on <b>${preferences} comics😁<b></p>`// html body
     };
 
     // send mail with defined transport object
