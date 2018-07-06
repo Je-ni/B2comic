@@ -52,7 +52,7 @@ exports.addSubscriber = function(req, res, data, preferences){
 };  
 
 exports.getAllSubscribers = function(req, res){
-    repo.get({}, '-__v', {path: 'preferences', select:'category -__v'},'', function(err, Subscribers){
+    repo.get({}, '-__v', {path: 'preferences', select:'category'},'', function(err, Subscribers){
         if(err) res.json({err: err, message: 'Something went wrong'});
         res.json(Subscribers);
     });
