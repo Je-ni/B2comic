@@ -2,38 +2,22 @@ var repo = require('../Repository/ComicRepo');
 var categoryRepo = require('../Repository/CategoryRepo');
 var bodyParser = require('body-parser');
 
-// exports.addSubscriber = function(req, res, data, preferences){
-//     repo.add(data, function(err, subscriber){
-//         var array = data.preferences.split(',');
-//         console.log(array);
-//         array.forEach(element => {            
-//             categoryRepo.getById(element, function(err, category){
-//                 category.subscribers.push(subscriber._id);
-//                 category.save();
-//                 if(err) res.json({err: err, message: "Something went wrong, please try again"});
-//             });
-//         });
-//         // exports.sendMail(req, res, data.email);
-//         res.json({sub: subscriber, message: 'You subscribed successfully'});
-//     });
-// };       
-
-exports.addComic = function(req, res, data, preferences){
+exports.addComic = function(req, res, data, categories){
     repo.add(data, function(err, comic){
         if(err) res.json({err: err, message: "Something went wrong, please try again"});
         else{
-            preferences.forEach(element => {
-                repo.getById(subscriber._id, function(err, subscriber){
-                    subscriber.preferences.push(element);
-                    subscriber.save();
+            categories.forEach(element => {
+                repo.getById(comic._id, function(err, comic){
+                    comic.categories.push(element);
+                    comic.save();
                 })         
                 categoryRepo.getById(element, function(err, category){
-                    category.subscribers.push(subscriber._id);
+                    category.comics.push(comic._id);
                     category.save();
                 });
             });
 
-            res.json({sub: subscriber, message: 'You subscribed successfully'});
+            res.json({sub: comic, message: 'You added comic successfully'});
         }
     });
 };  
