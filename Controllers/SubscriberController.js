@@ -17,10 +17,11 @@ exports.getSubscribers = function(req, res){
 exports.sendMail = function(req, res){
     return service.sendMail(req, res);
 }
-// exports.deleteUser = function(req, res){
-//     var option = {_id: req.params.id};
-//     return service.deleteUser(req, res, option);
-// }
+
+exports.deleteSubscriber = function(req, res){
+    var option = {email: req.params.email};
+    return service.deleteSubscriber(req, res, option);
+}
 
 // exports.getUserByParam = function(req, res){
 //     var option = req.query;

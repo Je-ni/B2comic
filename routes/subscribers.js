@@ -8,7 +8,8 @@ router.get('/', subscriberController.getSubscribers);
 router.post('/subscribe', subscriberController.addSubscriber);
 
 router.get('/sendmail', subscriberController.sendMail);
-// router.delete('/delete/:id', subscriberController.deletesubscriber);
+
+router.get('/unsubscribe/:email', subscriberController.deleteSubscriber);
 
 // router.get('/search', subscriberController.getsubscriberByParam);
 

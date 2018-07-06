@@ -31,7 +31,7 @@ exports.addSubscriber = function(req, res, data, preferences){
     repo.add(data, function(err, subscriber){
         if(err) res.json({err: err, message: "Something went wrong, please try again"});
         else{
-            exports.sendMail(req, res, data.email, data.name, preferences.category);
+            exports.sendMail(req, res, data.email, data.name);
 
             preferences.forEach(element => {
                 repo.getById(subscriber._id, function(err, subscriber){
@@ -42,6 +42,7 @@ exports.addSubscriber = function(req, res, data, preferences){
                     category.subscribers.push(subscriber._id);
                     category.save();
                 });
+                
             });
 
             res.json({sub: subscriber, message: 'You subscribed successfully'});
@@ -63,7 +64,8 @@ exports.sendMail = function(req, res, subscriber, name, preferences){
         to: subscriber, // list of receivers
         subject: `Welcome to Our World Of Comics ${name} 🎇`, // Subject line
         html: "<p>Yipee, you'll now start receiving our latest updates " +
-                `on <b>${preferences} comics😁<b></p>`// html body
+                `on <b>${preferences} comics😁<b></p>
+                <a href="http://localhost:3000/subscribers/unsubscribe/${subscriber}">unsubscribe😭</a>`// html body
     };
 
     // send mail with defined transport object
@@ -77,7 +79,12 @@ exports.sendMail = function(req, res, subscriber, name, preferences){
     });
 }
 
-
+ exports.deleteSubscriber= function(req, res, options){
+    repo.delete(options, function(err){
+        if(err) res.json({err: err, message: 'The unsubscription was unsuccessful'});
+        res.json({message: 'Successfully unsubscribed'});
+    });
+}
 
 
 
@@ -91,12 +98,7 @@ exports.sendMail = function(req, res, subscriber, name, preferences){
 //     });
 // }
 
-// exports.deleteUser = function(req, res, options){
-//     repo.delete(options, function(err){
-//         if(err) res.json({err: err, message: 'The user could not be deleted'});
-//         res.json({message: 'The user was deleted successfully'});
-//     });
-// }
+
 
 // exports.updateUser = function(req, res, id, options){
 //     repo.update(id, options, function(err){
