@@ -47,8 +47,6 @@ exports.addSubscriber = function(req, res, data, preferences){
             res.json({sub: subscriber, message: 'You subscribed successfully'});
         }
     });
-    // var array = preferences.split(',');
-    console.log(preferences);
 };  
 
 exports.getAllSubscribers = function(req, res){
