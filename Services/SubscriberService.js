@@ -11,40 +11,22 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-// exports.addSubscriber = function(req, res, data, preferences){
-//     repo.add(data, function(err, subscriber){
-//         var array = data.preferences.split(',');
-//         console.log(array);
-//         array.forEach(element => {            
-//             categoryRepo.getById(element, function(err, category){
-//                 category.subscribers.push(subscriber._id);
-//                 category.save();
-//                 if(err) res.json({err: err, message: "Something went wrong, please try again"});
-//             });
-//         });
-//         // exports.sendMail(req, res, data.email);
-//         res.json({sub: subscriber, message: 'You subscribed successfully'});
-//     });
-// };       
-
 exports.addSubscriber = function(req, res, data, preferences){
     repo.add(data, function(err, subscriber){
         if(err) res.json({err: err, message: "Something went wrong, please try again"});
         else{
-            exports.sendMail(req, res, data.email, data.name);
-
             preferences.forEach(element => {
                 repo.getById(subscriber._id, function(err, subscriber){
                     subscriber.preferences.push(element);
                     subscriber.save();
                 })         
-                categoryRepo.getById(element, function(err, category){
-                    category.subscribers.push(subscriber._id);
-                    category.save();
+                categoryRepo.getById(element, function(err, categories){
+                    categories.subscribers.push(subscriber._id);
+                    categories.save();
+                    // choices.push(categories.category);
                 });
-                
             });
-
+            exports.sendMail(req, res, data.email, data.name);
             res.json({sub: subscriber, message: 'You subscribed successfully'});
         }
     });
@@ -57,14 +39,14 @@ exports.getAllSubscribers = function(req, res){
     });
 }
 
-exports.sendMail = function(req, res, subscriber, name, preferences){
+exports.sendMail = function(req, res, subscriber, name){
     // setup email data with unicode symbols
     var mailOptions = {
         from: 'b2comicscrum@gmail.com', // sender address
         to: subscriber, // list of receivers
         subject: `Welcome to Our World Of Comics ${name} 🎇`, // Subject line
         html: "<p>Yipee, you'll now start receiving our latest updates " +
-                `on <b>${preferences} comics😁<b></p>
+                `on your preferred comics😁</p>
                 <a href="http://localhost:3000/subscribers/unsubscribe/${subscriber}">unsubscribe😭</a>`// html body
     };
 
