@@ -23,14 +23,14 @@ exports.addComic = function(req, res, data, categories){
 };  
 
 exports.getAllComics = function(req, res){
-    repo.get({}, '-__v', {path: 'Categories', select:'category'},'', function(err, comics){
+    repo.get({}, '-__v', {path: 'categories', select:'category'},'', function(err, comics){
         if(err) res.json({err: err, message: 'Something went wrong'});
         res.json(comics);
     });
 }
 
 exports.getComicsByParam = function(req, res, options){
-    repo.get(options, '-__v', {path: 'Categories', select:'category'},'',function(err, comics){
+    repo.get(options, '-__v', {path: 'categories', select:'category'},'',function(err, comics){
         if(err) res.json({err: err, message: 'Something went wrong'});
         res.json(comics);
     });

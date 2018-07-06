@@ -7,7 +7,7 @@ router.get('/', comicController.getComics);
 
 router.post('/add', comicController.addComic);
 
-router.get('/delete', comicController.deleteComic);
+router.post('/delete', comicController.deleteComic);
 
 router.get('/search', comicController.getComicByParam);
 

@@ -21,6 +21,6 @@ exports.deleteComic = function(req, res){
 }
 
 exports.getComicByParam = function(req, res){
-    var option = req.body.value;
+    var option = req.query;
     return service.getComicsByParam(req, res, option);
 }
